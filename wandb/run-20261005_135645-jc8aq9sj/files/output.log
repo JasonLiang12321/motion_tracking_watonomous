@@ -1,0 +1,3 @@
+[INFO]: Logging motion to wandb: squatting
+[34m[1mwandb[0m: [33mWARNING[0m Artifact "squatting" already exists with the same content. No new version will be created.
+[INFO]: Motion saved to wandb registry: motions/squatting

@@ -1,0 +1,3 @@
+[INFO]: Logging motion to wandb: curling
+wandb: WARNING Artifact "curling" already exists with the same content. No new version will be created.
+[INFO]: Motion saved to wandb registry: motions/curling

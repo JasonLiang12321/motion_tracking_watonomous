@@ -1,0 +1,46 @@
+{
+  "os": "Linux-7.0.0-31-generic-x86_64-with-glibc2.39",
+  "python": "CPython 3.11.16",
+  "startedAt": "2026-10-05T11:56:45.719315Z",
+  "args": [
+    "--input_file",
+    "/home/ifpt147/Tracking_Pipeline_WATO/csv/squatting.csv",
+    "--input_fps",
+    "240",
+    "--output_fps",
+    "50",
+    "--output_name",
+    "squatting"
+  ],
+  "program": "/home/ifpt147/Tracking_Pipeline_WATO/whole_body_tracking/scripts/csv_to_npz_wato.py",
+  "codePath": "whole_body_tracking/scripts/csv_to_npz_wato.py",
+  "codePathLocal": "whole_body_tracking/scripts/csv_to_npz_wato.py",
+  "email": "szlgm2018@gmail.com",
+  "root": "/home/ifpt147/Tracking_Pipeline_WATO",
+  "host": "ifpt147-MS-7E06",
+  "executable": "/home/ifpt147/miniconda3/envs/isaaclab_test/bin/python",
+  "cpu_count": 24,
+  "cpu_count_logical": 32,
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "9919701815296",
+      "used": "555246280704"
+    }
+  },
+  "memory": {
+    "total": "67179360256"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 4090",
+      "memoryTotal": "25757220864",
+      "cudaCores": 16384,
+      "architecture": "Ada",
+      "uuid": "GPU-52803a5b-0054-db74-57bd-b4ebb337dcf2"
+    }
+  ],
+  "cudaVersion": "13.0",
+  "writerId": "lnemcq6wp7jzqtud71ghnmlfv49l0pq9"
+}
