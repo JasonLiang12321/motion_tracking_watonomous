@@ -3,3 +3,23 @@ csv/
 npz/
 *.pkl
 __pycache__/
+# colcon / ROS build output
+build/
+install/
+log/
+# Python / training output
+__pycache__/
+*.egg-info/
+logs/
+wandb/
+outputs/
+# colcon / ROS build output
+build/
+install/
+log/
+# Python / training output
+__pycache__/
+*.egg-info/
+logs/
+wandb/
+outputs/
