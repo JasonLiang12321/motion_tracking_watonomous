@@ -29,12 +29,14 @@ if __name__ == "__main__":
                             record_video=args.record_video, video_path=args.video_path)
     
     frame_idx = 0
-    while True:
-        env.step(motion_root_pos[frame_idx], 
-                motion_root_rot[frame_idx], 
-                motion_dof_pos[frame_idx], 
-                rate_limit=True)
-        frame_idx += 1
-        if frame_idx >= len(motion_root_pos):
-            frame_idx = 0
-    env.close()
+    try:
+        while True:
+            env.step(motion_root_pos[frame_idx], motion_root_rot[frame_idx],
+                     motion_dof_pos[frame_idx], rate_limit=True)
+            frame_idx += 1
+            if frame_idx >= len(motion_root_pos):
+                if args.record_video:
+                    break          # one full pass recorded -> finish the file
+                frame_idx = 0      # otherwise keep looping for viewing
+    finally:
+        env.close()                # always finalizes the mp4, even on Ctrl+C
