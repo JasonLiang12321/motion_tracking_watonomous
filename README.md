@@ -3,10 +3,13 @@
 Motion tracking pipeline adapted for the **WATonomous (Wato) humanoid robot**:
 
 - **[GMR](https://github.com/YanjieZe/GMR)** (General Motion Retargeting): retargets human motion onto robot motion.
-- **[BeyondMimic `whole_body_tracking`](https://github.com/HybridRobotics/whole_body_tracking)**: physics-aware reinforcement learning, with a custom Wato CSV → NPZ configuration and Wato task registration.
+- **[BeyondMimic `whole_body_tracking`](https://github.com/HybridRobotics/whole_body_tracking)**: physics-aware reinforcement learning, configured for **Isaac Sim 5.1 + Isaac Lab 2.3**, with:
+  - a custom CSV → NPZ converter for the Wato robot (`scripts/csv_to_npz_wato.py`)
+  - a custom Wato robot config (`robots/wato.py`)
+  - Wato task registration for training (`Tracking-Flat-Wato-v0`)
 
 ```
-Human motion (BVH) ──GMR──▶ robot motion (PKL) ──▶ CSV ──▶ NPZ ──▶ BeyondMimic training
+Human motion (BVH) ──GMR──▶ robot motion (PKL) ──▶ CSV ──▶ NPZ ──▶ BeyondMimic training ──▶ evaluation
 ```
 
 ## Repository layout
@@ -86,3 +89,47 @@ python "${GMR_DIR}/convert_gmr_xsens.py" --target_file "$PKL_FILE" --output_file
 ```
 
 A custom script that converts the PKL to the CSV format BeyondMimic expects, and also fixes the quaternion ordering.
+
+#### 3. CSV → NPZ (Wato robot)
+
+Run from the `whole_body_tracking` folder. Replays the CSV on the Wato robot in Isaac Sim 5.1 / Isaac Lab 2.3, resamples it to 50 fps (the rate BeyondMimic trains at) and uploads the NPZ to the WandB motion registry. `--input_fps` must be the frame rate of the original recording.
+
+```bash
+python scripts/csv_to_npz_wato.py \
+    --input_file whole_body_humanoid/wato_boxing.csv \
+    --input_fps 120 \
+    --output_name wato_boxing \
+    --output_fps 50
+```
+
+### Training
+
+Trains a tracking policy on the Wato robot with the registered `Tracking-Flat-Wato-v0` task, using a motion from the WandB registry:
+
+```bash
+python scripts/rsl_rl/train.py \
+    --task=Tracking-Flat-Wato-v0 \
+    --registry_name=szlgm2018-university-of-waterloo-org/wandb-registry-motions/wato_boxing \
+    --num_envs 4096 \
+    --max_iterations 30000 \
+    --headless \
+    --logger wandb \
+    --log_project_name wato_tracking \
+    --run_name boxing_v1
+```
+
+### Evaluation
+
+Plays a trained policy through the whole motion, from start to finish:
+
+```bash
+python scripts/rsl_rl/play_full_motion.py \
+    --task=Tracking-Flat-Wato-v0 \
+    --wandb_path=szlgm2018-university-of-waterloo/wato_tracking/j1ziddpb \
+    --num_envs 1 \
+    --video
+```
+
+This saves a **real-time** MP4 video of the robot following the policy.
+
+> **Note:** the default `play.py` and `replay_npz.py` viewers are **not** real time by default: their playback speed depends on how fast your PC can step the simulation. Use the `--video` output to judge the true speed of a motion.
