@@ -88,6 +88,7 @@ PYTHONPATH="${GMR_DIR}${PYTHONPATH:+:$PYTHONPATH}" python scripts/xsens_bvh_to_r
     --save_path "$PKL_FILE" \
     --scale 0.01 \
     --reset_to_zero \
+    --start 3 \
     --bvh_format 3DSM
 [[ -f "$PKL_FILE" ]] || { echo "Error: GMR did not create $PKL_FILE"; exit 1; }
 
